@@ -112,8 +112,10 @@ class TableComponent extends LitElement {
     this.closeDeleteModal();
   }
 
-  handleEdit(id) {
-    alert(`Edit employee with ID: ${id}`);
+  handleEdit(event) {
+    this.selectedItem = event.detail;
+    this.data = this.data.map(emp => emp.id === this.selectedItem.id ? this.selectedItem : emp);
+    this.closeEditModal();
   }
 
   changePage(event) {
@@ -158,6 +160,8 @@ class TableComponent extends LitElement {
       ${this.showEditModal ? html`
         <form-component
           .item="${this.selectedItem}" 
+          status="edit"
+          title="Edit Employee" 
           @confirm="${this.handleEdit}" 
           @cancel="${this.closeEditModal}">
         </form-component>

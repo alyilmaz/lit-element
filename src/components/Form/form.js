@@ -44,15 +44,26 @@ class Form extends LitElement {
     }
 
     .form-group {
-    display: flex;
-    align-items: center; 
-    gap: 10px; 
-    margin-bottom: 10px;
+      display: flex;
+      align-items: center; 
+      gap: 10px; 
+      margin-bottom: 10px;
     }
+      p {
+      font-size: 1.5rem;
+      color: #f16522;
+      margin-bottom: 20px;
+      text-align: left;
+      }
 
     label {
     width: 100px; 
-    text-align: right; 
+    text-align: left;
+    padding: 8px; 
+    }
+
+    label::first-letter {
+      text-transform: uppercase;
     }
 
     input {
@@ -62,6 +73,21 @@ class Form extends LitElement {
     border-radius: 5px;
     }
 
+    select {
+      flex: 1;
+      font-size: 30px; 
+      border-radius: 5px;
+    }
+
+    .butons { 
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    button {
+      flex: 1;
+      margin: 5px; 
+    }
     .update-btn {
       background: #f16522;
       color: white;
@@ -82,12 +108,20 @@ class Form extends LitElement {
   `;
 
   static properties = {
-    item: { type: Object }
+    item: { type: Object },
+    optionOfPositions: { type: Array },
+    optionOfDepartments: { type: Array },
+    title: { type: String },
+    status: { type: String },
   };
 
   constructor() {
     super();
-    this.item = { id: '1', name: 'Ali', email: 'gmail', position: '123' };
+    this.item = {};
+    this.optionOfPositions = ['Junior', 'Medior', 'Senior'];
+    this.optionOfDepartments = ['Analytics', 'Tech'];
+    this.title = '';
+    this.status = '';
   }
 
   render() {
@@ -95,37 +129,49 @@ class Form extends LitElement {
     return html`
       <div class="modal">
       <div class="modal-content">
-          <h2>Edit Employee</h2>
+          <p>${this.title}</p>
           ${Object.entries(this.item).map(
             ([key, value]) => html`
-            <div class="form-group">
-              <label>${key}</label>
-              <input 
-                type="text" 
-                .value="${value}" 
-                @input="${e => this.updateField(key, e)}" 
-                placeholder="${key}" />
-                </div>
-            `
+              ${key === 'id' ? '' : html`
+              <div class="form-group">
+                <label>${key}</label>
+                ${key === 'position' || key === 'department' ? html`
+                    <select id="dropdown" @change="${e =>this.updateField(key, e)}">
+                    ${key === 'position' ? html` ${this.optionOfPositions.map(option => html`
+                      <option ?selected="${option === this.selectedValue}">${option}</option>
+                    `)} `: html`${this.optionOfDepartments.map(option => html`
+                      <option ?selected="${option === this.selectedValue}">${option}</option>
+                    `)} `}
+                    
+                  </select>
+                `: html`
+                <input 
+                  type="text" 
+                  .value="${value}" 
+                  @input="${e => this.updateField(key, e)}" 
+                  placeholder="${key}" />
+                  </div>
+              `}`}`
           )}
-          <button class="update-btn" @click="${this.saveChanges}">Update</button>
-          <button class="cancel-btn" @click="${this.closeModal}">Cancel</button>
+          <div class="butons">
+          <button class="update-btn" @click="${this._confirm}">Update</button>
+          <button class="cancel-btn" @click="${this._cancel}">Cancel</button>
+          </div>
         </div>
       </div>
     `;
   }
 
+  _confirm() {
+    this.dispatchEvent(new CustomEvent('confirm',{ detail: this.item, bubbles: true, composed: true }));
+  }
+
+  _cancel() {
+    this.dispatchEvent(new CustomEvent('cancel'));
+  }
+
   updateField(field, event) {
-    this.employee = { ...this.employee, [field]: event.target.value };
-  }
-
-  saveChanges() {
-    this.dispatchEvent(new CustomEvent('update-employee', { detail: this.employee, bubbles: true, composed: true }));
-    this.closeModal();
-  }
-
-  openModal(employee) {
-    this.employee = { ...employee };
+    this.item = { ...this.item, [field]: event.target.value };
   }
 }
 
