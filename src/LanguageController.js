@@ -1,6 +1,6 @@
 import { translations } from '../translations.js';
 
-class LanguageController {
+class LanguageController    {
   constructor(host) {
     this.host = host;
     this.host.addController(this);
