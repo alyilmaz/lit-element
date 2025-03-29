@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit';
 import "../Form/form.js";
+import { LanguageController }  from '../../utils/languageController.js';
 
 class NavbarComponent extends LitElement {
   static styles = css`
@@ -43,17 +44,28 @@ class NavbarComponent extends LitElement {
 
   static properties = {
     showAddModal: { type: Boolean },
-    templateItem: { type: Object }
+    templateItem: { type: Object },
+    currentLang: { type: String },
   };
 
   constructor() {
     super();
+    this.languageController = new LanguageController(this);
     this.showAddModal = false;
     this.templateItem = {};
+    this.currentLang = document.documentElement.lang || 'en';
   }
 
   openAddModal() {
     this.showAddModal = true;
+  }
+
+  switchLanguage() {
+    this.currentLang = this.currentLang === 'en' ? 'tr' : 'en';
+    document.documentElement.lang = this.currentLang; // Update the <html> lang attribute
+    this.requestUpdate();
+    // Show a confirmation message
+    //alert(`Language changed to: ${document.documentElement.lang === 'en' ? 'English 🇬🇧' : 'Türkçe 🇹🇷'}`);
   }
 
   closeAddModal() {
@@ -61,8 +73,6 @@ class NavbarComponent extends LitElement {
   }
 
   handleAdd(event) {
-    // this.selectedItem = event.detail;
-    // this.data = this.data.map(emp => emp.id === this.selectedItem.id ? this.selectedItem : emp);
     this.dispatchEvent(new CustomEvent('add',{ detail: event.detail, bubbles: true, composed: true }));
     this.closeAddModal();
   }
@@ -76,16 +86,16 @@ class NavbarComponent extends LitElement {
           ING
         </div>
         <div class="menu">
-          <button>👥 Employees</button>
-          <button class="add-btn" @click="${() => this.openAddModal()}">+ Add New</button>
-          <button>🇹🇷</button>
+          <button>👥 ${this.languageController.t('employees')}</button>
+          <button class="add-btn" @click="${() => this.openAddModal()}">+ ${this.languageController.t('addNew')}</button>
+          <button class="lang-btn" @click="${() => this.switchLanguage()}">${this.currentLang === 'en' ? '🇹🇷' : '🇬🇧'}</button>
         </div>
       </div>
        ${this.showAddModal ? html`
         <form-component
           .item="${this.templateItem}"
           status="add"
-          title="Add Employee" 
+          title=${this.languageController.t('addEmployee')} 
           @confirm="${this.handleAdd}" 
           @cancel="${this.closeAddModal}">
         </form-component>

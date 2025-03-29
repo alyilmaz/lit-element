@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import { LanguageController }  from '../../utils/languageController.js';
 
 class Form extends LitElement {
   static styles = css`
@@ -117,6 +118,7 @@ class Form extends LitElement {
 
   constructor() {
     super();
+    this.languageController = new LanguageController(this);
     this.item = {};
     this.optionOfPositions = ['Junior', 'Medior', 'Senior'];
     this.optionOfDepartments = ['Analytics', 'Tech'];
@@ -134,7 +136,7 @@ class Form extends LitElement {
             ([key, value]) => html`
               ${key === 'id' ? '' : html`
               <div class="form-group">
-                <label>${key}</label>
+                <label>${this.languageController?.t(key) || key}</label>
                 ${key === 'position' || key === 'department' ? html`
                     <select id="dropdown" @change="${e =>this.updateField(key, e)}">
                     ${key === 'position' ? html` ${this.optionOfPositions.map(option => html`
@@ -154,8 +156,8 @@ class Form extends LitElement {
               `}`}`
           )}
           <div class="butons">
-          <button class="update-btn" @click="${this._confirm}">Update</button>
-          <button class="cancel-btn" @click="${this._cancel}">Cancel</button>
+          <button class="update-btn" @click="${this._confirm}">${this.languageController?.t(this.status)}</button>
+          <button class="cancel-btn" @click="${this._cancel}">${this.languageController?.t('cancel')}</button>
           </div>
         </div>
       </div>

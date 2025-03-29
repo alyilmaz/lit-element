@@ -2,7 +2,7 @@ import { LitElement, html, css } from 'lit';
 import  './src/components/DataTable/index.js';
 import './src/components/Navbar/navbar.js';
 import './src/components/menubar/menu-bar.js';
-import './src/LanguageController.js';
+import { LanguageController }  from './src/utils/languageController.js';
 
 class MyApp extends LitElement {
   static styles = css`
@@ -18,12 +18,13 @@ class MyApp extends LitElement {
     headers: { type: Array },
     data: { type: Array },
     templateData: { type: Object },
+    isTable: { type: Boolean },
   };
 
   constructor() {
     super();
-    //this.languageController = new LanguageController(this);
-    this.headers = ['First Name', 'Last Name', 'Employment Date', 'Birth Date', 'Phone', 'Email', 'Department', 'Position', 'Actions'];
+    this.languageController = new LanguageController(this);
+    this.headers = ['firstName', 'lastName', 'employmentDate', 'birthDate', 'phone', 'email', 'department', 'position', 'actions'];
     this.data = Array(50).fill().map((_, i) => ({
       id: i + 1,
       firstName: 'Ahmet',
@@ -45,6 +46,7 @@ class MyApp extends LitElement {
       department: 'Analytics',
       position: 'Junior'
     };
+    this.isTable = true;
   }
 
   handleAdd(event) {
@@ -52,16 +54,20 @@ class MyApp extends LitElement {
     this.data = [...this.data, { ...newEmployee, id: this.data.length + 1 }];
   }
 
-  changeLanguage(lang) {
-    document.documentElement.lang = lang; // Update the <html> lang attribute
+  enableTable() {
+    this.isTable = true;
+  }
+
+  enableList() {
+    this.isTable = false;
   }
 
 
   render() {
     return html`
     <navbar-component .templateItem=${this.templateData} @confirm="${this.handleAdd}" ></navbar-component>
-    <menu-bar title="Employee List"></menu-bar>
-    <data-table  .headers="${this.headers}" .data="${this.data}"></data-table>
+    <menu-bar title=${this.languageController.t('employeeList')} @enable-table="${this.enableTable}" @enable-list="${this.enableList}"></menu-bar>
+    <data-table  .headers="${this.headers}" .data="${this.data}" .isTable="${this.isTable}"></data-table>
       `;
   }
 }

@@ -1,4 +1,5 @@
 import { LitElement, html, css } from 'lit';
+import { LanguageController }  from '../../utils/languageController.js';
 
 class DeleteConfirmation extends LitElement {
   static styles = css`
@@ -66,20 +67,28 @@ class DeleteConfirmation extends LitElement {
     employee: { type: Object }
   };
 
+  constructor() {
+    super();
+    this.languageController = new LanguageController(this);
+    this.employee = {};
+  }
+
   render() {
     if (!this.employee) return html``;
     return html`
        <div class="modal">
         <div class="modal-header">
-          <span>Are you sure?</span>
+          <span>${this.languageController?.t('areYouSure')}</span>
           <button @click=${this._cancel}>✖</button>
         </div>
         <div class="modal-body">
-          Selected Employee record of <strong>${this.employee.firstName} ${this.employee.lastName}</strong> will be deleted.
+        ${this.languageController?.t('deleteConfirmation')
+          .replace("firstName", this.employee.firstName)
+          .replace("lastName", this.employee.lastName)}
         </div>
         <div class="modal-footer">
-          <button class="proceed-btn" @click="${this._confirm}">Proceed</button>
-          <button class="cancel-btn" @click="${this._cancel}">Cancel</button>
+          <button class="proceed-btn" @click="${this._confirm}">${this.languageController?.t('proceed')}</button>
+          <button class="cancel-btn" @click="${this._cancel}">${this.languageController?.t('cancel')}</button>
         </div>
       </div>
     `;

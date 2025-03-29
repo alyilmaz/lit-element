@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'lit';
 import './pagination.js';
 import '../Confirmation/delete-confirmation.js';
 import '../Form/form.js';
+import { LanguageController }  from '../../utils/languageController.js';
 
 class TableComponent extends LitElement {
   static styles = css`
@@ -66,16 +67,19 @@ class TableComponent extends LitElement {
     data: { type: Array },
     showDeleteModal: { type: Boolean },
     showEditModal: { type: Boolean },
+    isTable: { type: Boolean },
   };
 
   constructor() {
     super();
+    this.languageController = new LanguageController(this);
     this.data = [];
     this.currentPage = 1;
     this.itemsPerPage = 7;
     this.headers = [];
     this.showDeleteModal = false;
     this.showEditModal = false;
+    this.isTable = true;
   }
 
   get totalPages() {
@@ -126,18 +130,18 @@ class TableComponent extends LitElement {
     return html`
       <table>
         <tr>
-          ${this.headers?.map(header => html`<th>${header}</th>`)}
+          ${this.headers?.map(header => html`<th>${this.languageController?.t(header) || header}</th>`)} 
         </tr>
         ${this.paginatedData.map(item => html`
           <tr>
-            <td>${item.firstName}</td>
-            <td>${item.lastName}</td>
-            <td>${item.employmentDate}</td>
-            <td>${item.birthDate}</td>
-            <td>${item.phone}</td>
-            <td>${item.email}</td>
-            <td>${item.department}</td>
-            <td>${item.position}</td>
+            <td style="border-right: ${this.isTable ? '1px solid #ddd' : 'none'};">${item.firstName}</td>
+            <td style="border-right: ${this.isTable ? '1px solid #ddd' : 'none'};">${item.lastName}</td>
+            <td style="border-right: ${this.isTable ? '1px solid #ddd' : 'none'};">${item.employmentDate}</td>
+            <td style="border-right: ${this.isTable ? '1px solid #ddd' : 'none'};">${item.birthDate}</td>
+            <td style="border-right: ${this.isTable ? '1px solid #ddd' : 'none'};">${item.phone}</td>
+            <td style="border-right: ${this.isTable ? '1px solid #ddd' : 'none'};">${item.email}</td>
+            <td style="border-right: ${this.isTable ? '1px solid #ddd' : 'none'};">${item.department}</td>
+            <td style="border-right: ${this.isTable ? '1px solid #ddd' : 'none'};">${item.position}</td>
             <td>
               <button class="edit" @click="${() => this.openEditModal(item)}">✏️</button>
               <button class="delete" @click="${() => this.openDeleteModal(item)}">🗑️</button>
@@ -160,8 +164,8 @@ class TableComponent extends LitElement {
       ${this.showEditModal ? html`
         <form-component
           .item="${this.selectedItem}" 
-          status="edit"
-          title="Edit Employee" 
+          status="update"
+          title=${this.languageController?.t('updateTitle')}
           @confirm="${this.handleEdit}" 
           @cancel="${this.closeEditModal}">
         </form-component>

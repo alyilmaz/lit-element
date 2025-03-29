@@ -59,19 +59,19 @@ class MenuBar extends LitElement {
     <div class="navbar">
     <div class="title">${this.title}</div>
     <div class="icons">
-      <span class="icon" @click="${this._toggleMenu}">☰</span>
-      <span class="icon" @click="${this._toggleGrid}">▦</span>
+      <span class="icon" @click="${this._enableList}">☰</span>
+      <span class="icon" @click="${this._enableTable}">▦</span>
     </div>
   </div>
   `;
   }
 
-  _toggleMenu() {
-    this.dispatchEvent(new CustomEvent('toggle-menu', { bubbles: true, composed: true }));
+  _enableList() {
+    this.dispatchEvent(new CustomEvent('enable-list'));
   }
 
-  _toggleGrid() {
-    this.dispatchEvent(new CustomEvent('toggle-grid', { bubbles: true, composed: true }));
+  _enableTable() {
+    this.dispatchEvent(new CustomEvent('enable-table'));
   }
 }
 

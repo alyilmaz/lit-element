@@ -24,6 +24,7 @@ class TableComponent extends LitElement {
     headers: { type: Array },
     data: { type: Array },
     title: { type: String },
+    isTable: { type: Boolean },
   };
 
   constructor() {
@@ -31,11 +32,12 @@ class TableComponent extends LitElement {
     this.headers = [];
     this.data = []; 
     this.title = ''; 
+    this.isTable = true;
   }
 
   render() {
     return html`
-      <table-component .headers="${this.headers}" .data="${this.data}"></table-component>
+      <table-component .headers="${this.headers}" .data="${this.data}" .isTable="${this.isTable}"></table-component>
     `;
   }
 }
