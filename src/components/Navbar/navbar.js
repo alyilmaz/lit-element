@@ -86,7 +86,7 @@ class NavbarComponent extends LitElement {
           ING
         </div>
         <div class="menu">
-          <button>👥 ${this.languageController.t('employees')}</button>
+          <button class="employees">👥 ${this.languageController.t('employees')}</button>
           <button class="add-btn" @click="${() => this.openAddModal()}">+ ${this.languageController.t('addNew')}</button>
           <button class="lang-btn" @click="${() => this.switchLanguage()}">${this.currentLang === 'en' ? '🇹🇷' : '🇬🇧'}</button>
         </div>

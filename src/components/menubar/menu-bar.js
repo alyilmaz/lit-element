@@ -59,8 +59,8 @@ class MenuBar extends LitElement {
     <div class="navbar">
     <div class="title">${this.title}</div>
     <div class="icons">
-      <span class="icon" @click="${this._enableList}">☰</span>
-      <span class="icon" @click="${this._enableTable}">▦</span>
+      <span class="icon" id="enableList" @click="${this._enableList}">☰</span>
+      <span class="icon" id="enableTable" @click="${this._enableTable}">▦</span>
     </div>
   </div>
   `;

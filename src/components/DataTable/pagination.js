@@ -61,7 +61,7 @@ class PaginationComponent extends LitElement {
       <span class="page ${this.currentPage === 1 ? 'disabled' : ''}" @click="${() => this.handlePageClick(this.currentPage - 1)}">&#10094;</span>
       ${pages.map(page => 
         page === '...'
-          ? html`<span>...</span>`
+          ? html`<span class="dots">...</span>`
           : html`<span class="page ${this.currentPage === page ? 'active' : ''}" @click="${() => this.handlePageClick(page)}">${page}</span>`
       )}
       <span class="page ${this.currentPage === this.totalPages ? 'disabled' : ''}" @click="${() => this.handlePageClick(this.currentPage + 1)}">&#10095;</span>

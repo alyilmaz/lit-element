@@ -67,7 +67,7 @@ class MyApp extends LitElement {
     return html`
     <navbar-component .templateItem=${this.templateData} @confirm="${this.handleAdd}" ></navbar-component>
     <menu-bar title=${this.languageController.t('employeeList')} @enable-table="${this.enableTable}" @enable-list="${this.enableList}"></menu-bar>
-    <data-table  .headers="${this.headers}" .data="${this.data}" .isTable="${this.isTable}"></data-table>
+    <data-table  .headers="${this.headers}" .data="${this.data}" .isTable="${this.isTable}" itemsPerPage=8></data-table>
       `;
   }
 }

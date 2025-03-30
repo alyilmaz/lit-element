@@ -89,7 +89,7 @@ class Form extends LitElement {
       flex: 1;
       margin: 5px; 
     }
-    .update-btn {
+    .confirm-btn {
       background: #f16522;
       color: white;
       padding: 10px;
@@ -156,7 +156,7 @@ class Form extends LitElement {
               `}`}`
           )}
           <div class="butons">
-          <button class="update-btn" @click="${this._confirm}">${this.languageController?.t(this.status)}</button>
+          <button class="confirm-btn" @click="${this._confirm}">${this.languageController?.t(this.status)}</button>
           <button class="cancel-btn" @click="${this._cancel}">${this.languageController?.t('cancel')}</button>
           </div>
         </div>

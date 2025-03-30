@@ -25,6 +25,7 @@ class TableComponent extends LitElement {
     data: { type: Array },
     title: { type: String },
     isTable: { type: Boolean },
+    itemsPerPage: { type: Number },
   };
 
   constructor() {
@@ -37,7 +38,7 @@ class TableComponent extends LitElement {
 
   render() {
     return html`
-      <table-component .headers="${this.headers}" .data="${this.data}" .isTable="${this.isTable}"></table-component>
+      <table-component .headers="${this.headers}" .data="${this.data}" .isTable="${this.isTable}" .itemsPerPage="${this.itemsPerPage}"></table-component>
     `;
   }
 }
