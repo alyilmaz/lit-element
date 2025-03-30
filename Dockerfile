@@ -1,25 +1,25 @@
-# 1. Node.js ile bağımlılıkları yükle
+# Node based alpine is used
 FROM node:20-alpine AS build
 
-# Çalışma dizinini belirle
+# define workspace
 WORKDIR /app
 
-# Bağımlılık dosyalarını kopyala ve yükle
+# Install the dependecies
 COPY package.json package-lock.json ./
 RUN npm install 
 
-# Proje dosyalarını kopyala ve build işlemini yap
+# Copy project file and make build
 COPY . .
 RUN npm run build
 
-# 2. Nginx ile serve etmek için ikinci aşama
+# Nginx based alpine dist is used
 FROM nginx:alpine
 
-# Build edilen dosyaları Nginx dizinine kopyala
+# Build folder is moved to target
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Nginx'in portunu aç
+# Expose Nginx
 EXPOSE 80
 
-# Nginx başlat
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
